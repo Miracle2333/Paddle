@@ -1539,6 +1539,8 @@ class TestRound_ZeroDim(TestRound):
 
 class TestRelu(TestActivation):
     def setUp(self):
+        #如果是组合算子
+        self.prim_op_type = "comp"
         self.op_type = "relu"
         self.init_dtype()
         self.init_shape()
@@ -1563,7 +1565,10 @@ class TestRelu(TestActivation):
         if self.dtype == np.float16:
             return
         self.check_grad(['X'], 'Out')
-
+    
+    def test_check_output(self):
+        self.check_output(check_prim=True)
+        
 
 class TestRelu_ZeroDim(TestRelu):
     def init_shape(self):

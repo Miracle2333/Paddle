@@ -149,3 +149,16 @@ def mean_composite(x, axis, keepdim):
         dtype=sum_x.dtype,
     )
     return divide(sum_x, norm)
+
+
+@REGISTER_COMPOSITE('relu')
+def relu_composite(x):
+    """define composite rule of op relu"""
+    # # /* relu(x) = max(x, 0) */ copy from relu-kernel.cc 
+    if x > 0:
+        out = x
+        return out
+    else:
+        out = full(x.shape, 0, x.dtype)
+        return out
+    
